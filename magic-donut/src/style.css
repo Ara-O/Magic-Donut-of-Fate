@@ -24,7 +24,7 @@ body::before {
   background-repeat: repeat;
   background-color: black;
   background-size: 400px;
-  filter: brightness(0.23); /* Adjust the opacity as desired */
+  filter: brightness(0.15); /* Adjust the opacity as desired */
   z-index: -1;
 }
 

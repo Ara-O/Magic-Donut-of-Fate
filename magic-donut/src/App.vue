@@ -7,7 +7,7 @@
       <h3 class="font-bold text-2xl text-center">
         The Magic Donut Has Deemed You Worthy
       </h3>
-      <h3 class="mt-4 text-[15px] md:text-lg font-medium">
+      <h3 class="mt-4 text-[15px] md:text-lg font-light">
         Click the Donut Below To Enter Its Presence
       </h3>
       <img
@@ -21,12 +21,15 @@
       />
     </span>
     <span class="flex flex-col items-center" v-else>
-      <h3 class="font-bold max-w-xl leading-10 w-auto text-2xl text-center">
-        The Magic Donut Has Deemed you Not Worthy. Flee. Lest you feel its wrath
+      <h3 class="font-bold text-2xl text-center">
+        The Magic Donut Has Deemed You Not Worthy.
+      </h3>
+      <h3 class="mt-4 text-[15px] md:text-lg font-light">
+        Flee. Lest you feel its wrath
       </h3>
       <img
         src="./assets/donut.png"
-        class="w-10 cursor-pointer mt-24 absolute"
+        class="w-10 cursor-pointer mt-[100px] absolute"
         alt="Donut image"
         id="cursed-donut"
         ref="donutButtonImagePrank"
@@ -53,6 +56,7 @@
       <span class="flex justify-center mt-6 items-center gap-5">
         <input
           type="text"
+          v-model="userQuestion"
           class="h-11 w-72 px-4 font-light rounded-[4px] border-[0.01px] border-[#ffffffba] bg-transparent text-center text-sm outline-none"
           placeholder="Ask and ye shall receive"
         />
@@ -71,9 +75,7 @@
 
       <div class="h-56">
         <h5 class="leading-7 mt-5 font-light text-[14.5px]">
-          The magic donut has decided your fate: "Embark on the magical journey
-          of three.js! Let your creativity soar and dive into the world of 3D
-          graphics."
+          {{ userFate }}
         </h5>
       </div>
     </section>
@@ -83,10 +85,12 @@
 <script setup lang="ts">
 import { onMounted, ref, watchEffect } from "vue";
 import createDonut from "./threejs/donut";
-
+import axios from "axios";
 let donutCanvas = ref<HTMLCanvasElement>();
 let donutButtonImage = ref<HTMLImageElement>();
 let donutButtonImagePrank = ref<HTMLImageElement>();
+let userQuestion = ref<string>("");
+let userFate = ref<string>("");
 let worthinessHasBeenDecided = ref<boolean>(false);
 let userIsWorthy = ref<boolean>();
 
@@ -98,11 +102,17 @@ watchEffect(() => {
   }
 });
 
-function receiveFate() {
+async function receiveFate() {
   donutButtonImage.value?.classList.add("animateDonutClick");
   setTimeout(() => {
     donutButtonImage.value?.classList.remove("animateDonutClick");
   }, 250);
+  let response = await axios.post("http://localhost:8080/askMagicDonut", {
+    question: userQuestion.value,
+  });
+
+  console.log(response);
+  userFate.value = response.data.message;
   console.log("ahh");
 }
 
