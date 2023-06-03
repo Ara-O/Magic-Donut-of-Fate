@@ -11,6 +11,7 @@ body {
   color: white;
   position: relative;
   overflow: hidden;
+  outline: none;
 }
 
 body::before {

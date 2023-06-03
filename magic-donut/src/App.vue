@@ -41,11 +41,21 @@
       class="flex justify-center items-center h-screen flex-col"
     >
       <canvas
-        class="bg-gray-400 bg-transparent"
+        class="bg-transparent"
         height="300"
         width="300"
         ref="donutCanvas"
+        v-if="userQuestion !== 'Show me Homer'"
       ></canvas>
+
+      <canvas
+        class="bg-transparent"
+        height="300"
+        width="300"
+        ref="homerCanvas"
+        v-if="userQuestion === 'Show me Homer'"
+      ></canvas>
+
       <section class="text-center w-96">
         <h3 class="text-lg tracking-wide font-medium">
           Ask the Magic Donut a question
@@ -59,7 +69,8 @@
             placeholder="Ask and ye shall receive"
           />
           <button
-            class="transition ease-in-out hover:animate-spin"
+            class="transition ease-in-out"
+            :class="{ 'animate-spin': fateIsLoading }"
             @click="receiveFate"
           >
             <img
@@ -84,25 +95,31 @@
 <script setup lang="ts">
 import { onMounted, ref, watchEffect } from "vue";
 import createDonut from "./threejs/donut";
+import createHomer from "./threejs/homer";
 import axios from "axios";
 let donutCanvas = ref<HTMLCanvasElement>();
+let homerCanvas = ref<HTMLCanvasElement>();
 let donutButtonImage = ref<HTMLImageElement>();
 let donutButtonImagePrank = ref<HTMLImageElement>();
 let userQuestion = ref<string>("");
 let userFate = ref<string>("");
 let worthinessHasBeenDecided = ref<boolean>(false);
 let userIsWorthy = ref<boolean>();
+let fateIsLoading = ref<boolean>(false);
 
 watchEffect(() => {
   if (donutCanvas.value) {
     createDonut(donutCanvas.value);
-  } else {
-    // not mounted yet, or the element was unmounted (e.g. by v-if)
+  }
+
+  if (homerCanvas.value) {
+    createHomer(homerCanvas.value);
   }
 });
 
 async function receiveFate() {
   donutButtonImage.value?.classList.add("animateDonutClick");
+  fateIsLoading.value = true;
   setTimeout(() => {
     donutButtonImage.value?.classList.remove("animateDonutClick");
   }, 250);
@@ -113,9 +130,8 @@ async function receiveFate() {
     }
   );
 
-  console.log(response);
+  fateIsLoading.value = false;
   userFate.value = response.data.message;
-  console.log("ahh");
 }
 
 function enterDonutPresence() {
@@ -134,7 +150,7 @@ function moveDonutButtonPosition() {
 
 function forbiddenDonutClick() {
   alert(
-    "Somehow, you managed to click it, you get no prize, but stil. Good job :)"
+    "Somehow, you managed to click it, you get no prize, but still. Good job :)"
   );
 }
 
@@ -142,6 +158,19 @@ onMounted(async () => {
   const worthiness: number = Math.random();
   if (worthiness < 0.7) {
     userIsWorthy.value = true;
+    console.log(` 
+ _   _      _ _
+| | | |    | | |
+| |_| | ___| | | ___
+|  _  |/ _ \\ | |/ _ \\ 
+| | | |  __/ | | (_) |
+\\_| |_/\\___|_|_\\____/
+`);
+    console.log("");
+    console.log(
+      "%cYour first easter egg is 'Show me Homer'!",
+      "font-family: monospace,Poppins, Arial, sans-serif; font-size: 13px;color: lightgreen"
+    );
   } else {
     userIsWorthy.value = false;
   }
@@ -157,7 +186,7 @@ onMounted(async () => {
 
 .fade-in-enter-active,
 .fade-in-leave-active {
-  transition: opacity 0.5s ease;
+  transition: opacity 0.7s ease;
 }
 
 .fade-in-enter-from,
