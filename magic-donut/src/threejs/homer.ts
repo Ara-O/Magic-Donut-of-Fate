@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { ArcballControls } from "three/addons/controls/ArcballControls.js";
 // import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-
+import Homer from "../assets/homer.jpg";
 let scene: THREE.Scene;
 let camera: THREE.Camera;
 let homer: THREE.Mesh;
@@ -26,7 +26,7 @@ export default function createDonut(canvas: HTMLCanvasElement) {
   scene.add(camera);
 
   let textureLoader = new THREE.TextureLoader();
-  const homerTexture = textureLoader.load("../src/assets/homer.jpg", () => {
+  const homerTexture = textureLoader.load(Homer, () => {
     homer = new THREE.Mesh(
       new THREE.SphereGeometry(14),
       new THREE.MeshBasicMaterial({
