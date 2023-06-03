@@ -35,4 +35,8 @@ app.post("/askMagicDonut", async function (req, res) {
   }
 });
 
+app.get("/health", (req, res) => {
+  res.status(200).send("Server running");
+});
+
 app.listen(8080);
