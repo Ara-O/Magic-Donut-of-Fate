@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { ArcballControls } from "three/addons/controls/ArcballControls.js";
-import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+// import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 let scene: THREE.Scene;
 let camera: THREE.Camera;

@@ -107,9 +107,12 @@ async function receiveFate() {
   setTimeout(() => {
     donutButtonImage.value?.classList.remove("animateDonutClick");
   }, 250);
-  let response = await axios.post("http://localhost:8080/askMagicDonut", {
-    question: userQuestion.value,
-  });
+  let response = await axios.post(
+    "https://https://magic-donut.onrender.com/askMagicDonut",
+    {
+      question: userQuestion.value,
+    }
+  );
 
   console.log(response);
   userFate.value = response.data.message;
