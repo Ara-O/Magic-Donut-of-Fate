@@ -90,6 +90,13 @@
       </section>
     </main>
   </Transition>
+  <a href="https://github.com/Ara-O/Magic-Donut-of-Fate" target="_blank">
+    <img
+      src="./assets/github-logo.png"
+      class="w-7 brightness-50 cursor-pointer absolute bottom-4 right-5 invert"
+      alt="Github Logo"
+    />
+  </a>
 </template>
 
 <script setup lang="ts">

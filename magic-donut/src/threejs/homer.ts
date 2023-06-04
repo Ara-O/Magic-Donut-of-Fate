@@ -34,6 +34,7 @@ export default function createDonut(canvas: HTMLCanvasElement) {
       })
     );
     scene.add(homer);
+    animate();
   });
 
   scene.background = null;
@@ -45,11 +46,10 @@ export default function createDonut(canvas: HTMLCanvasElement) {
   //@ts-expect-error
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.setSize(sizes.width, sizes.height);
-
-  animate();
 }
 
 function animate() {
+  homer.rotation.y += 0.01;
   requestAnimationFrame(animate);
   renderer.render(scene, camera);
 }
